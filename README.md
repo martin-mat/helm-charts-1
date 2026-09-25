@@ -4,6 +4,8 @@
 
 # MongoDB Helm Charts repository for Kubernetes
 
+[![CNTi cert](https://github.com/mongodb/helm-charts/actions/workflows/cnti.yml/badge.svg)](https://github.com/mongodb/helm-charts/actions/workflows/cnti.yml)
+
 This repository contains Helm Charts for different MongoDB products.
 
 ## Supported Charts
