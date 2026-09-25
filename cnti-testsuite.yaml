@@ -1,0 +1,29 @@
+---
+# CNTi Test Suite configuration for the MongoDB Kubernetes Operator chart in
+# this repository, then a one-member MongoDBCommunity replica set the operator
+# turns into a StatefulSet. The StatefulSet is found by the label the operator
+# puts on it (app: <resource name>-svc).
+config_version: "v2"
+common:
+  workload_resource_labels:
+    - key: app
+      value: cnti-mongodb-svc
+      namespace: mongodb
+  container_names:
+    # Retained operator release tags used by the rolling update, downgrade
+    # and rollback tests; the chart's appVersion is the tag under test.
+    - name: mongodb-kubernetes-operator
+      rolling_update_test_tag: "1.11.0"
+      rolling_downgrade_test_tag: "1.10.0"
+      rolling_version_change_test_tag: "1.11.0"
+      rollback_from_tag: "1.11.0"
+deployments:
+  helm_dirs:
+    - name: mongodb-kubernetes
+      helm_directory: charts/mongodb-kubernetes
+      namespace: mongodb
+      priority: 1
+  manifests:
+    - name: replica-set
+      manifest_directory: ci/cnti-manifests
+      priority: 2

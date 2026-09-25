@@ -1,0 +1,35 @@
+---
+# A one-member MongoDBCommunity replica set for the CNTi run: the operator
+# creates a StatefulSet (mongod plus mongodb-agent) owned by this resource.
+apiVersion: mongodbcommunity.mongodb.com/v1
+kind: MongoDBCommunity
+metadata:
+  name: cnti-mongodb
+  namespace: mongodb
+spec:
+  members: 1
+  type: ReplicaSet
+  version: "7.0.12"
+  security:
+    authentication:
+      modes: ["SCRAM"]
+  users:
+    - name: cnti
+      db: admin
+      passwordSecretRef:
+        name: cnti-mongodb-password
+      roles:
+        - name: clusterAdmin
+          db: admin
+        - name: userAdminAnyDatabase
+          db: admin
+      scramCredentialsSecretName: cnti-scram
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: cnti-mongodb-password
+  namespace: mongodb
+type: Opaque
+stringData:
+  password: cnti-test-only
